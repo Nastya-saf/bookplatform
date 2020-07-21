@@ -1,0 +1,42 @@
+<div class="row mt-0">
+    <div class="col">
+        <h3>Система скидок</h3>
+    </div>
+</div>
+<div class="row mt-1">
+    <div class="col-7">
+        {{#if DiscountSystem}}
+        {{#each DiscountSystem}}
+        <div class="row mt-2" style="border-radius: 15px; background-color: #e3effd;">
+            <div class="col-2 text-center align-self-center py-3"
+                style=" border-top-left-radius: 15px; border-bottom-left-radius:15px;background-color: #abe6f8;">
+                {{this.discountPercentage}}%
+            </div>
+            <div class="col align-self-center">
+                Топ {{this.maxPlace}}
+            </div>
+            <div class="col text-center align-self-center">
+                <input class="btn btn-primary" type="button" onclick="editDiscountSystem({{this.idDiscount}})"
+                    value="Редактировать">
+            </div>
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="row alert alert-primary">
+            <div class="col text-center">
+                Пока системы скидок нет :-( <br>
+                Добавьте скидку
+            </div>
+        </div>
+        {{/if}}
+    </div>
+    <div class="col-1"></div>
+    <div class="col-3 pt-2 pb-3 h-100" style="border-radius: 15px; background-color: #e3effd;">
+        <form id="formi" name="formi">
+            <label>Размер скидки</label><input class="form-control" type="number" name="discountPercentage"
+                class="field" />
+            <label>Место в топе</label><input class="form-control" type="number" name="placeTheTop" class="field" />
+            <input class="btn btn-primary mt-2" type="button" onclick="addDiscountSystem()" value="Добавить скидку">
+        </form>
+    </div>
+</div>

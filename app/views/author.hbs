@@ -1,0 +1,34 @@
+{{>menu}}
+<div class="row" style="margin-top: 75px;">
+    <div class="col-2">
+    </div>
+    <div class="col-7 ml-3">
+        <div class="row">
+            <div class="col-">
+                <figure class="figureAuthor rounded mx-auto d-block">
+                    <img src="/{{Authors.photo}}" class="rounded mx-auto d-block" alt="фото">
+                </figure>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <h2 class="text-center">{{Authors.lastName}}<br>
+                            {{Authors.name}} {{Authors.patronymic}}</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col  text-center">
+                        {{dateOfBirth}} - {{dateOfDeath}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <div class="font-weight-bold">Биография:</div>
+                {{Authors.biography}}
+            </div>
+        </div>
+    </div>
+</div>
+{{>footer}}

@@ -1,0 +1,505 @@
+{{>menu}}
+<div class="row" style="margin-top: 75px; margin-left: 10px;">
+    <div class="col-2" style="border: 2px solid #415161;">
+        <div class="text-primary underline" onclick="get('/user/profile')">Профиль</div>
+        <div class="text-primary underline" onclick="get('/user/myMessages')">Мои Сообщения</div>
+        <div class="text-primary underline" onclick="get('/user/createMessageAdmin')">Сообщение администратору</div>
+        Покупатель<br>
+        <div class="text-primary underline" onclick="get('/user/mySubscriptions')">Мои подписки</div>
+        <div class="text-primary underline" class="text-primary underline" onclick="get('/user/Auctions')">Аукционы
+            (Участвую)</div>
+        <a href="/user/cart">Корзина</a><br>
+        <a href="/user/cart?list=Orders&auction=false">Заказы</a><br>
+        Продавец<br>
+        <a href="/user/myPlaceInTheTop">Место в топе(Рейтинг)</a><br>
+        <div class="text-primary underline" onclick="get('/user/myBook')">Продаваемые книги</div>
+        <div class="text-primary underline" onclick="get('/user/booksPurchased')">Купленные книги</div>
+        <div class="text-primary underline" onclick="get('/user/bookAuctions')">Аукционы - моих книг</div>
+        <div class="text-primary underline" onclick="get('/user/createBook')">Выложить книгу</div>
+        <div class="text-primary underline" onclick="get('/user/deleteBook')">Удалить книгу</div>
+        <div class="text-primary underline" onclick="get('/user/putAuction')">Выставить на аукцион</div>
+        <div class="text-primary underline" onclick="get('/user/myDiscount')">Скидка</div>
+        <div class="text-primary underline" onclick="get('/user/deliveryMethod')">Способ доставки</div>
+        <div class="text-primary underline" onclick="get('/user/paymentMethod')">Способ оплаты</div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col" id="us">
+        {{>profile}}
+    </div>
+</div>
+
+<script>
+    function review(idReview) {
+        let response = document.getElementById("response" + idReview).value;
+        let Json = JSON.stringify({
+            response: response
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/ResponseToReview/" + idReview, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("us").innerHTML = request.response;
+        });
+        request.send(Json);
+    }
+    function additionalDate() {
+        let formElement = document.forms["formi"];
+        var formData = new FormData(formElement);
+        var request = new XMLHttpRequest();
+        request.open("POST", "/user/additionalData");
+        request.addEventListener("load", function () {
+            $('#ModalAdditional').modal('hide');
+            get("/user/profile");
+        });
+        request.send(formData);
+    };
+    function getAdittional() {
+        let request = new XMLHttpRequest();
+        request.open("GET", "/user/additionalData", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("additional").innerHTML = request.response;
+        });
+        request.send();
+    }
+    function add() {
+        let registerForm = document.forms["formi"];
+        let textOne = registerForm.elements["textOne"].value;
+        let textTwo;
+        if (registerForm.elements["textTwo"]) {
+            textTwo = registerForm.elements["textTwo"].value;
+        }
+        var url = document.getElementById("url").textContent;
+        let json = JSON.stringify({
+            textOne: textOne,
+            textTwo: textTwo,
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/create" + url, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            var json = JSON.parse(request.response);
+            if (json.title) {
+                let registerFormOne = document.forms["formi"];
+                if (registerFormOne) {
+                    let select = registerFormOne.elements[url + "s"];
+                    let newOption = new Option(json.title, json.id);
+                    newOption.selected = true;
+                    select.append(newOption);
+                }
+                $('#Modalcreate').modal('hide');
+                alert(json.message);
+            }
+            else {
+                alert(json.message);
+            }
+
+        });
+        request.send(json);
+    };
+    function getcreateGenre() {
+        $('#Modalcreate').modal('show');
+        let request = new XMLHttpRequest();
+        request.open("GET", "/user/createGenre", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("Helpercreate").innerHTML = request.response;
+        });
+        request.send();
+    };
+    function getCreatePhotoBook() {
+        $('#Modalcreate').modal('show');
+        let request = new XMLHttpRequest();
+        request.open("GET", "/user/createPhotoBook", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("Helpercreate").innerHTML = request.response;
+        });
+        request.send();
+    };
+    function getcreatePublisher() {
+        $('#Modalcreate').modal('show');
+        let request = new XMLHttpRequest();
+        request.open("GET", "/user/createPublisher", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("Helpercreate").innerHTML = request.response;
+        });
+        request.send();
+    };
+    function getcreateAuthor() {
+        $('#Modalcreate').modal('show');
+        let request = new XMLHttpRequest();
+        request.open("GET", "/author/createAuthor", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("Helpercreate").innerHTML = request.response;
+        });
+        request.send();
+    };
+    function postcreateAuthor() {
+        let registerForm = document.forms["formi"];
+        let lastName = registerForm.elements["lastName"].value;
+        let name = registerForm.elements["name"].value;
+        let patronymic = registerForm.elements["patronymic"].value;
+        let dateOfBirth = registerForm.elements["dateOfBirth"].value;
+        let dateOfDeath = registerForm.elements["dateOfDeath"].value;
+        let biography = registerForm.elements["biography"].value;
+        let json = JSON.stringify({
+            lastName: lastName,
+            name: name,
+            patronymic: patronymic,
+            dateOfBirth: dateOfBirth,
+            dateOfDeath: dateOfDeath,
+            biography: biography
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/author/createAuthor", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            var jsonAuthor = JSON.parse(request.response);
+            if (jsonAuthor.Author) {
+                let registerFormOne = document.forms["formi"];
+                if (registerFormOne) {
+                    let authorsSelect = registerFormOne.elements["authors"];
+                    var Author = jsonAuthor.Author;
+                    let newOption = new Option(Author.lastName + Author.name + Author.patronymic, Author.idAuthor);
+                    newOption.selected = true;
+                    authorsSelect.append(newOption);
+                }
+                $('#Modalcreate').modal('hide');
+                alert(jsonAuthor.message);
+            }
+            else {
+                alert(jsonAuthor.message);
+            }
+
+        });
+        request.send(json);
+    };
+    function createPhoto() {
+        let formElement = document.forms["formi"];
+        var formData = new FormData(formElement);
+        var request = new XMLHttpRequest();
+        request.open("POST", "/user/createPhotoBook");
+        request.addEventListener("load", function () {
+            $('#Modalcreate').modal('hide')
+        });
+        request.send(formData);
+    }
+    function clickFalse() {
+        var auction = false;
+        click(auction);
+    };
+    function clickTrue() {
+        var auction = true;
+        click(auction);
+    };
+    function click(auction) {
+        let registerForm = document.forms["formi"];
+        let title = registerForm.elements["title"].value;
+        let format = registerForm.elements["format"].value;
+        let numberOfPages = registerForm.elements["numberOfPages"].value;
+        let description = registerForm.elements["description"].value;
+        let yearOfPublishing = registerForm.elements["yearOfPublishing"].value;
+        let price = registerForm.elements["price"].value;
+
+        let BBK = registerForm.elements["BBK"].value;
+        let UDC = registerForm.elements["UDC"].value;
+        let ISBN = registerForm.elements["ISBN"].value;
+        let annotation = registerForm.elements["annotation"].value;
+
+        let sg = registerForm.elements["Genres"];
+        let genre = Array.from(sg.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+        let as = registerForm.elements["authors"];
+        let author = Array.from(as.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+        let pm = registerForm.elements["PaymentMethod"];
+        let PaymentMethod = Array.from(pm.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+        let dm = registerForm.elements["DeliveryMethod"];
+        let DeliveryMethod = Array.from(dm.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+        let informdeliv = registerForm.elements["InformationDelivery"];
+        let InformationDelivery = Array.from(informdeliv.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+        let states = registerForm.elements["States"].value;
+        let Publisher = registerForm.elements["Publishers"].value;
+        let ProductGroup = registerForm.elements["ProductGroups"].value;
+        let TypesOfBinding = registerForm.elements["TypesOfBindings"].value;
+        let startDate = 0;
+        let endDate = 0;
+        let minRate = 0;
+        if (auction) {
+            startDate = registerForm.elements["startDate"].value;
+            endDate = registerForm.elements["endDate"].value;
+            minRate = registerForm.elements["minRate"].value;
+        }
+        let book = JSON.stringify({
+            title: title,
+            format: format,
+            numberOfPages: numberOfPages,
+            description: description,
+            yearOfPublishing: yearOfPublishing,
+            price: price,
+            Genres: genre,
+            States: states,
+            Publisher: Publisher,
+            Authors: author,
+            auction: auction,
+            ProductGroup: ProductGroup,
+            TypesOfBinding: TypesOfBinding,
+            PaymentMethod: PaymentMethod,
+            DeliveryMethod: DeliveryMethod,
+            InformationDelivery: InformationDelivery,
+
+            BBK: BBK,
+            UDC: UDC,
+            ISBN: ISBN,
+            annotation: annotation,
+
+            startDate: startDate,
+            endDate: endDate,
+            minRate: minRate
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/createBook", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            $('#ModalAuction').modal('hide')
+            get('/user/profile');
+        });
+        request.send(book);
+    };
+</script>
+<script>
+    function readUserMessage(idMessage) {
+        let id = JSON.stringify({
+            idMessage: idMessage
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/myMessages", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            get("/user/myMessages");
+        });
+        request.send(id);
+    };
+    function paymentchooseMethod(idbook) {
+        let registerForm = document.forms["formi"];
+        let sg = registerForm.elements["paymentMethods"];
+        let paymentMethods = Array.from(sg.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+        var all;
+        var chbox = document.getElementById('all');
+
+        if (chbox.checked) {
+            all = true;
+        }
+        else {
+            all = false;
+        }
+        let Method = JSON.stringify({
+            idbook: idbook,
+            all: all,
+            paymentMethods: paymentMethods
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/paymentMethod", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("list").innerHTML = request.response;
+        });
+        request.send(Method);
+    }
+    function deliverychooseMethod(idbook) {
+        let registerForm = document.forms["formi"];
+
+        let sg = registerForm.elements["deliveryMethods"];
+        let DeliveryMethod = Array.from(sg.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+        let all = false;
+        let chbox = document.getElementById('all');
+        if (chbox.checked) {
+            all = true;
+        }
+        else {
+            all = false;
+        }
+        let Method = JSON.stringify({
+            idbook: idbook,
+            all: all,
+            deliveryMethods: DeliveryMethod
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/deliveryMethod", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("list").innerHTML = request.response;
+        });
+        request.send(Method);
+    }
+    function putAuction(idBook) {
+        let registerForm = document.forms["formiModal" + idBook];
+        let startDate = registerForm.elements["startDate"].value;
+        let endDate = registerForm.elements["endDate"].value;
+        let minRate = registerForm.elements["minRate"].value;
+        let book = JSON.stringify({
+            idbook: idBook,
+            startDate: startDate,
+            endDate: endDate,
+            minRate: minRate
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/putAuction", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            $('#ModalAuction' + idBook).modal('hide');
+            get("/user/putAuction");
+        });
+        request.send(book);
+    };
+    function deleteOffBook(idBook) {
+        let book = JSON.stringify({
+            idbook: idBook
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/deleteBook", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            get("/user/deleteBook");
+        });
+        request.send(book);
+    };
+    function auctionOffBook(idLot) {
+        let lot = JSON.stringify({
+            idlot: idLot
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/bookAuctions", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            get("/user/bookAuctions");
+        });
+        request.send(lot);
+    };
+    function pay(idBook) {
+        let book = JSON.stringify({
+            idbook: idBook
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/myBook", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            alert(request.response);
+            get("/user/myBook");
+        });
+        request.send(book);
+    }
+    function deleteOff(idBook) {
+        let book = JSON.stringify({
+            idbook: idBook
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/deleteBook", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            get("/user/myBook");
+        });
+        request.send(book);
+    };
+    function auctionOff(idLot) {
+        let lot = JSON.stringify({
+            idlot: idLot
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/bookAuctions", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            get("/user/myBook");
+        });
+        request.send(lot);
+    };
+
+    function rate(id, minRate) {
+        let registerForm = document.forms["formi"];
+        let myRate = registerForm.elements["myRate" + id].value;
+        if (myRate < minRate) {
+            alert("Ставка не может быть меньше минимальной.");
+            return;
+        }
+        var click = "rate";
+        let Auction = JSON.stringify({
+            click: click,
+            idLot: id,
+            myRate: myRate
+        });
+        postAuction(Auction);
+    };
+    function renouncement(id) {
+        var click = "renouncement";
+        let Auction = JSON.stringify({
+            click: click,
+            idLot: id
+        });
+        postAuction(Auction);
+    };
+    function postAuction(Auction) {
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/Auctions", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            alert(request.response);
+            get('/user/Auctions');
+        });
+        request.send(Auction);
+    }
+    function unsubscribe(idsubscriptions) {
+        let Json = JSON.stringify({
+            idsubscriptions: idsubscriptions
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/mySubscriptions", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("list").innerHTML = request.response;
+        });
+        request.send(Json);
+    }
+    function get(url) {
+        let request = new XMLHttpRequest();
+        request.open("GET", url, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("us").innerHTML = request.response;
+        });
+        request.send();
+    };
+    document.getElementById("submitCart").addEventListener("click", function (e) {
+        e.preventDefault();
+        let registerForm = document.forms["formiCart"];
+        let list = registerForm.elements["list"].value;
+        let auction = registerForm.elements["auction"].value;
+
+        let listJson = JSON.stringify({
+            list: list,
+            auction: auction
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/cart", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("list").innerHTML = request.response;
+        });
+        request.send(listJson);
+    });
+</script>
+{{>footer}}

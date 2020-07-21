@@ -1,0 +1,60 @@
+{{>menu}}
+<div class="row" style="margin-top: 75px; margin-left: 10px;">
+    <div class="col-2"></div>
+    <div class="col-8">
+        <h3>Топ продавцов</h3>
+        {{#if UserTop}}
+        <div class="row ">
+            <div class="col text-center">
+                <div class="row mt-4 mb-5" style=" border-radius: 15px;background-color: #baf5f0;">
+                    <div class="col-2 text-center align-self-center py-3"
+                        style=" border-top-left-radius: 15px; border-bottom-left-radius:15px;background-color: #abf8d8;">
+                        {{UserTop.place}}
+                    </div>
+                    <div class="col- align-self-center ml-2">
+                        <figure class="figureTopAvatar rounded mx-auto d-block">
+                            <img src="../{{UserTop.user.avatar}}" class="rounded mx-auto d-block" alt="avatar">
+                        </figure>
+                    </div>
+                    <div class="col align-self-center">
+                        <a href="/seller/{{UserTop.user.idUser}}">{{UserTop.user.nickname}}</a>
+                    </div>
+                    <div class="col-3 align-self-center">
+                        Проданных книг: {{UserTop.user.seller.numberOfSales}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <div class="row alert alert-primary">
+            <div class="col text-center">
+                Вас нет в топе продавцов, так как вы еще не выставили ни одной книги.
+            </div>
+        </div>
+        {{/if}}
+        <div class="row">
+            <div class="col">
+                {{#each Top}}
+                <div class="row mt-3" style=" border-radius: 15px;background-color: #e3effd;">
+                    <div class="col-2 text-center align-self-center py-3"
+                        style=" border-top-left-radius: 15px; border-bottom-left-radius:15px;background-color: #abe6f8;">
+                        {{this.place}}
+                    </div>
+                    <div class="col- align-self-center ml-2">
+                        <figure class="figureTopAvatar rounded mx-auto d-block">
+                            <img src="../{{this.user.avatar}}" class="rounded mx-auto d-block" alt="avatar">
+                        </figure>
+                    </div>
+                    <div class="col align-self-center">
+                        <a href="/seller/{{this.user.idUser}}">{{this.user.nickname}}</a>
+                    </div>
+                    <div class="col-3 align-self-center">
+                        Проданных книг: {{this.user.seller.numberOfSales}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+{{>footer}}

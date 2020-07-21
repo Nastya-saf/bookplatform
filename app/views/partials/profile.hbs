@@ -1,0 +1,121 @@
+<div class="modal fade" id="ModalAdditional" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Пользователь - дополнительные данные</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="additional">
+
+            </div>
+            <div class="modal-footer">
+                <input class="btn btn-primary" id="submit" type="button" onclick="additionalDate()" value="Добавить" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row bookCrete">
+    <div class="col-7">
+        <div class="row" style="margin-top: 0;">
+            <div class="col">
+                <h3>Учетная запись</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-5">
+                <figure class="figureProfile rounded mx-auto d-block">
+                    <img src="/{{User.avatar}}" alt="аватар">
+                </figure>
+            </div>
+            <div class="col">
+                <div class="row">Почта: {{User.email}}</div>
+                <div class="row">Nikname: {{User.nickname}}</div>
+                <div class="row">Ежемесячная оплата: {{User.monthlyFee}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">Фамилия:
+                {{#if User.buyer.lastName}}
+                {{User.buyer.lastName}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+            <div class="col">Страна:
+                {{#if User.buyer.country}}
+                {{User.buyer.country}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">Имя:
+                {{#if User.buyer.name}}
+                {{User.buyer.name}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+            <div class="col">Город:
+                {{#if User.buyer.city}}
+                {{User.buyer.city}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">Отчество:
+                {{#if User.buyer.patronymic}}
+                {{User.buyer.patronymic}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+            <div class="col">Адрес:
+                {{#if User.buyer.address}}
+                {{User.buyer.address}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">Телефон:
+                {{#if User.buyer.telephone}}
+                {{User.buyer.telephone}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+            <div class="col">Почтовый индекс:
+                {{#if User.buyer.postcode}}
+                {{User.buyer.postcode}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                Дополнительная информация:<br>
+                {{#if User.seller.InformationAdditional}}
+                {{User.seller.InformationAdditional}}
+                {{else}}
+                &#8212;
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAdditional"
+            onclick="getAdittional()">
+            Изменить
+        </button>
+    </div>
+</div>

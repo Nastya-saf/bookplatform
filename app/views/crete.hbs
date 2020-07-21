@@ -1,0 +1,29 @@
+<form id="formiCreate" name="formiCreate">
+    <div id="url" style="visibility:hidden;">{{url}}</div>
+    <div class="row" id="heder">
+        <div class="col-9">
+            <h3>{{heder}}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-9">
+            {{#if textarea}}
+            <textarea class="form-control" name="textOne" rows="3" placeholder="{{textOne}}"></textarea>
+            {{else}}
+            <label>{{textOne}}</label><input class="form-control" name="textOne" class="field" value="{{title}}" />
+            {{/if}}
+            {{#if textTwo}}
+            <label>{{textTwo}}</label><input class="form-control" name="textTwo" class="field" />
+            {{/if}}
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-9">
+            {{#if button}}
+            <input class="btn btn-primary" type="button" onclick="add({{id}})" value="{{button}}" />
+            {{else}}
+            <input class="btn btn-primary" type="button" onclick="add({{id}})" value="Добавить" />
+            {{/if}}
+        </div>
+    </div>
+</form>

@@ -1,0 +1,77 @@
+{{#each Baskets}}
+<div class="modal fade" id="exampleModalCenter{{this.idBasket}}" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Выберете способ оплаты и доставки</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Способ оплаты</label>
+                <select id="PaymentMethods{{this.idBasket}}" name="PaymentMethods{{this.idBasket}}" class="field">
+                    {{#select this.book.PaymentMethods}}
+                    {{#each this.book.PaymentMethods}}
+                    <option value="{{this.idPayment}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select><br>
+                <label>Способ доставки</label>
+                <select id="DeliveryMethods{{this.idBasket}}" name="DeliveryMethods{{this.idBasket}}" class="field">
+                    {{#select this.book.DeliveryMethods}}
+                    {{#each this.book.DeliveryMethods}}
+                    <option value="{{this.idDelivery}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select><br>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" data-dismiss="modal"
+                    onclick="paymentOfOne({{this.idBasket}},{{this.book.idBook}})">Оплатить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+<div id="name" hidden>Basket</div>
+<div class="row pl-4 mt-2" style="width:100%;">
+    <div class="col">
+        {{#if Baskets}}
+        {{#each Baskets}}
+        <div class="row align-items-center mt-2 py-2" style="border: 2px solid #dee2e6;background-color: #e3effd;">
+            <div class="col-2">
+                <figure class="figureIndex rounded mx-auto d-block">
+                    <img src="../{{this.book.photoBooks.0.URL}}" class="rounded mx-auto d-block" alt="фото книги "
+                        width="100px">
+                </figure>
+            </div>
+            <div class="col">
+                {{this.book.title}}
+            </div>
+            <div class="col-3">
+                <a href="/seller/{{this.book.idUser}}">{{this.book.user.nickname}}</a>
+            </div>
+            <div class="col-" style="margin: 15px;">
+                {{this.book.price}}
+            </div>
+            <div class="col-xm" style="padding:0;">
+                <button class="btn btn-primary" type="button" data-toggle="modal"
+                    data-target="#exampleModalCenter{{this.idBasket}}">Оплатить</button>
+            </div>
+            <div class="col- mx-2">
+                <input class="btn btn-primary" type="button" onclick="renouncement({{this.idBasket}})" value="X" />
+            </div>
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="row alert alert-primary">
+            <div class="col text-center">
+                Ваша Корзина пуста :-(
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</div>

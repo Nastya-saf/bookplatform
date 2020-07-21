@@ -1,0 +1,27 @@
+{{>menu}}
+<div class="row" style="margin-top: 75px; margin-left: 10px;">
+    <div class="col-2"></div>
+    <div class="col-8">
+        <div class="row">
+            <div class="col">
+                <h3>Правила</h3>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <dl>
+                    {{#each Regulations}}
+                    <div class="row mt-2">
+                        <div class="col">
+                            <dt class="text-uppercase">{{this.head}}</dt>
+                            <dd>{{this.rule}}</dd>
+                            <div class="dropdown-divider"></div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+{{>footer}}

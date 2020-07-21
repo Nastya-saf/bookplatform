@@ -1,0 +1,24 @@
+<div class="col-9">
+    <div class="row">
+        <h3>Мои подписки (жанры на которые вы подписаны)</h3>
+    </div>
+    {{#if this.Subscriptions}}
+    {{#each this.Subscriptions}}
+    <div class="row mt-4 py-2" style="border: 2px solid #dee2e6;background-color: #e3effd;">
+        <div class="col">
+            {{this.genre.title}}
+        </div>
+        <div class="col-2 px-0">
+            <input class="btn btn-primary" type="button" onclick="unsubscribe({{this.idSubscriptions}})"
+                value="Отписаться" />
+        </div>
+    </div>
+    {{/each}}
+    {{else}}
+    <div class="row alert alert-primary">
+        <div class="col text-center">
+            Нам жаль, но Вы не подписаны не на один из жанров :-(
+        </div>
+    </div>
+    {{/if}}
+</div>

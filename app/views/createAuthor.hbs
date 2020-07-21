@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col">
+        <h3>Добавление нового автора</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form method="POST" id="formiCreate" name="formiCreate" enctype="multipart/form-data">
+            <label>Фамилия</label><input name="lastName" class="form-control" />
+            <label>Имя</label><input name="name" class="form-control" />
+            <label>Отчество</label><input name="patronymic" class="form-control" />
+            <label>Дата рождения</label><input name="dateOfBirth" class="form-control" />
+            <label>Дата смерти (если есть)</label><input name="dateOfDeath" class="form-control" />
+            <label>Биография</label>
+            <textarea class="form-control" name="biography" rows="3"></textarea>
+            <input class="btn btn-primary mt-4" id="submit" type="button" onclick="postcreateAuthor()"
+                value="Добавить" />
+        </form>
+    </div>
+</div>

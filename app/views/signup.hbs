@@ -1,0 +1,37 @@
+{{>menu}}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-5">
+        <form id="signup" name="signup" method="post" action="/signup">
+            <label for="email">Почта</label>
+            <input class="form-control" name="email" type="email" placeholder="email" /><br>
+            <label for="nickname">Ник</label>
+            <input class="form-control" name="nickname" type="text" placeholder="ник" /><br>
+            <label for="password">Пароль</label>
+            <input class="form-control" name="password" type="password" placeholder="пароль" /><br>
+            <input class="btn  btn-primary" type="button" onclick="signUp()" value="Зарегистрироваться">
+        </form>
+    </div>
+</div>
+
+<script>
+    function signUp() {
+        let registerForm = document.forms["formi"];
+        let email = registerForm.elements["email"].value;
+        let nickname = registerForm.elements["nickname"].value;
+        let password = registerForm.elements["password"].value;
+        let Json = JSON.stringify({
+            email: email,
+            nickname: nickname,
+            password: password
+        });
+        console.log("Json:" + Json);
+        let request = new XMLHttpRequest();
+        request.open("POST", "/signup", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.location.href = "/";
+        });
+        request.send(Json);
+    };
+</script>

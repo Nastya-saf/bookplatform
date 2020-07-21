@@ -1,0 +1,32 @@
+{{>menu}}
+<div class="row justify-content-center mt-5">
+    <div class="col-5">
+        <form id="signin" name="signin" method="post" action="signin">
+            <label for="email">Почта</label>
+            <input class="form-control" name="email" type="text" placeholder="email" /><br>
+            <label for="password">Пароль</label>
+            <input class="form-control" name="password" type="password" placeholder="пароль" /><br>
+            <input class="btn  btn-primary" type="button" onclick="signIn()" value="Войти">
+        </form>
+    </div>
+</div>
+<script>
+    function signIn() {
+        let registerForm = document.forms["formi"];
+        let email = registerForm.elements["email"].value;
+        let password = registerForm.elements["password"].value;
+        let Json = JSON.stringify({
+            email: email,
+            password: password
+        });
+        console.log("Json:" + Json);
+        let request = new XMLHttpRequest();
+        request.open("POST", "/signin", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.location.href = "/";
+        });
+        request.send(Json);
+    };
+</script>
+{{>footer}}

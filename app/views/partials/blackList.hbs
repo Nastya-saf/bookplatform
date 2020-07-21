@@ -1,0 +1,74 @@
+<div class="row mt-0">
+    <div class="col">
+        <h3>Черный список</h3>
+    </div>
+</div>
+{{#if Users}}
+<div class="row  mt-0 mb-5">
+    <div class="col">
+        <form id="formi" name="formi">
+            <div class="row">
+                <div class="col form-check">
+                    <div class="row mt-0">
+                        <div class="col-1"></div>
+                        <div class="col search">
+                            <input type="text" name="searchUser" placeholder="Никнейм или почта">
+                            <button type="button" onclick="deleteBlackList(0)"></button>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{{#each Users}}
+<div class="row align-items-center  mt-2 py-2" style="border: 2px solid #dee2e6; background-color: #e3effd;">
+    <div class="col- mr-1 ml-2">
+        <figure class="figureTopAvatar rounded mx-auto d-block">
+            <img src="../{{this.avatar}}" class="rounded mx-auto d-block" alt="avatar">
+        </figure>
+    </div>
+    <div class="col">
+        <div class="row my-0">
+            <div class="col text-center">
+                <a href="/seller/{{this.idUser}}">{{this.nickname}}</a>
+            </div>
+        </div>
+        <div class="row my-0">
+            <div class="col text-center">
+                {{this.email}}
+            </div>
+        </div>
+    </div>
+    <div class="col-3 text-center">
+        {{#each this.blackLists}}
+        {{this.message}}
+        {{/each}}
+    </div>
+    <div class="col- mr-1 text-center">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="Warnings" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Предупреждения
+        </button>
+        <div class="dropdown-menu" aria-labelledby="Warnings">
+            {{#each this.warnings}}
+            <div>
+                {{this.message}}
+            </div>
+            <div class="dropdown-divider"></div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="col- mr-3">
+        <input class="btn btn-primary" type="button" onclick="deleteBlackList({{this.idUser}})" value="Удалить">
+    </div>
+</div>
+{{/each}}
+{{else}}
+<div class="row alert alert-primary">
+    <div class="col text-center">
+        Черный список пуст :-)
+    </div>
+</div>
+{{/if}}

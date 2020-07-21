@@ -1,0 +1,170 @@
+{{>menu}}
+<script>
+    function cartAuction() {
+        let ach = document.getElementById('auction');
+        let str = document.getElementById('name').textContent;
+        let auction = false;
+        if (ach.checked) {
+            auction = true;
+        }
+        else {
+            auction = false;
+        };
+        let listJson = JSON.stringify({
+            checked: false,
+            renouncement: false,
+            list: str,
+            auction: auction
+        });
+        post(listJson);
+    }
+    function orders() {
+        let ach = document.getElementById('auction');
+        let auction = false;
+        if (ach.checked) {
+            auction = true;
+        }
+        else {
+            auction = false;
+        };
+        let listJson = JSON.stringify({
+            checked: false,
+            renouncement: false,
+            list: "Orders",
+            auction: auction
+        });
+        post(listJson);
+    };
+    function basket() {
+        let ach = document.getElementById('auction');
+        let auction = false;
+        if (ach.checked) {
+            auction = true;
+        }
+        else {
+            auction = false;
+        };
+        let listJson = JSON.stringify({
+            checked: false,
+            renouncement: false,
+            list: "Basket",
+            auction: auction
+        });
+        post(listJson);
+    }
+
+    function post(listJson) {
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/cart", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("cart").innerHTML = request.response;
+        });
+        request.send(listJson);
+    }
+</script>
+<div class="row" style="margin-top: 75px;">
+    <div class="col-2">
+    </div>
+    <div class="col" style="margin-left: 15px;">
+        <div class="row">
+            <div class="col-9">
+                <ul class="nav nav-tabs" id="tab-example" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="first-tab" data-toggle="tab" role="tab" href="#Basket"
+                            aria-selected="true" onclick="basket()">Корзина</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="second-tab" data-toggle="tab" role="tab" href="#Basket"
+                            onclick="orders()">Заказы </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="tab-content-example">
+                    <div class="tab-pane fade show active" id="Basket" role="tabpanel" aria-labelledby="first-tab">
+
+                        <div class="row mt-3 ml-0">
+                            <div class="col">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="auction"
+                                        onchange="cartAuction()">
+                                    <label class="custom-control-label" for="auction">Аукцион</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="cart">
+                            <div class="col">
+                                {{>basket}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    function paymentOfOne(idbasket, idbook) {
+        var str = "PaymentMethods" + idbasket;
+        var j = document.getElementById(str).selectedIndex;
+        var options = document.getElementById(str).options;
+        var paymentMethod = options[j].value;
+        var str = "DeliveryMethods" + idbasket;
+        var j = document.getElementById(str).selectedIndex;
+        var options = document.getElementById(str).options;
+        var deliveryMethod = options[j].value;
+        let Json = JSON.stringify({
+            checked: true,
+            renouncement: false,
+            idbasket: idbasket,
+            idbook: idbook,
+            paymentMethod: paymentMethod,
+            deliveryMethod: deliveryMethod,
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/cart", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            var req = JSON.parse(request.response);
+            if (req.answer) {
+                alert(req.message);
+
+                document.getElementById("l1").checked = false;
+                document.getElementById("l2").checked = true;
+
+                let event = new Event("click");
+                submitCart.dispatchEvent(event);
+
+            }
+            else {
+                alert(req.message);
+                document.getElementById("cart").innerHTML = req.url;
+                basket();
+
+            }
+
+        });
+        request.send(Json);
+    };
+    function renouncement(idbascet) {
+        let Json = JSON.stringify({
+            checked: false,
+            renouncement: true,
+            idbascet: idbascet
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/cart", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            alert(request.response);
+            basket();
+
+        });
+        request.send(Json);
+    };
+</script>
+{{>footer}}

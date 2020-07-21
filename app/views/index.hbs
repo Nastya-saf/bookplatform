@@ -1,0 +1,152 @@
+{{>menu}}
+<div class="container-fluid">
+    <div class="row">
+        <h1>Главная</h1>
+    </div>
+    <div class="row">
+        <div class="col-2" style="  padding: 10px;">
+
+            <div class="custom-control custom-switch">
+                <input name="auction" type="checkbox" class="custom-control-input" id="auction"
+                    onchange="searchClick()">
+                <label class="custom-control-label" for="auction">Аукционы</label>
+            </div>
+            Год издания:<br>
+            <div class="row">
+                <div class="col mx-0 pr-0" style="border-radius:0px;">
+                    <input type="range" class="custom-range" id="customRange1" min="1800" max="1910" value="1800"
+                        oninput="updateTextInput('From',this.value)" onchange="searchClick()">
+                </div>
+                <div class="col pl-0" style="margin-left:-5px;">
+                    <input type="range" class="custom-range" id="customRange2" min="1910" max="2020" value="2020"
+                        oninput="updateTextInput('Before',this.value)" onchange="searchClick()">
+                </div>
+            </div>
+            <div class="row justify-content-between">
+                <div class="col">1800</div>
+                <div class="col- mr-3">2020</div>
+            </div>
+            <label style="padding-right:15px;">
+                <font style="padding-right:5px;">от:</font>
+                <input id="yearOfPublishingFrom" name="yearOfPublishingFrom" class="field" size="1px"
+                    style="padding-left:20px;" value="1800" disabled>
+            </label>
+            <label>
+                <font style="padding-right:5px;">до:</font>
+                <input id="yearOfPublishingBefore" name="yearOfPublishingBefore" class="field" size="1px"
+                    style="padding-left:20px;" value="2020" disabled />
+            </label><br>
+            <b>Жанры:</b><br>
+            <select name="genre" class="custom-select" size="7" onchange="searchClick()">
+                {{#select Genres}}
+                <option value="">Все</option>
+                {{#each Genres}}
+                <option value="{{this.idGenre}}">{{this.title}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            <b>Авторы:</b><br>
+            <select name="author" class="custom-select" size="7" onchange="searchClick()">
+                {{#select Authors}}
+                <option value="">Все</option>
+                {{#each Authors}}
+                <option value="{{this.idAuthor}}">{{this.lastName}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            <b>Издательства:</b><br>
+            <select name="publisher" class="custom-select" size="7" onchange="searchClick()">
+                {{#select Publishers}}
+                <option value="">Все</option>
+                {{#each Publishers}}
+                <option value="{{this.idPublisher}}">{{this.title}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h3>Книги</h3>
+                </div>
+            </div>
+            <div class="row my-0 py-0">
+                <div class="col- ml-3 py-0">
+                    Дата выставления:
+                </div>
+                <div class="col ml-1 py-0 px-0">
+                    <div style="margin-top: -8px;">
+                        <input id="priceASC" type="radio" name="sorting" value="ASC" checked style="display: none;"
+                            onchange="searchClick()" />
+                        <label style="height: 15px; width:25px;
+                        position: absolute;
+                        top:1px;" for="priceASC">
+                        </label>
+                        <i id="ariaASC" class="fa fa-caret-up fa-2x" aria-hidden="true"
+                            style="height: 0px; width:0px;"></i>
+                    </div>
+                    <div style="margin-top: -22px;">
+                        <input id="priceDESC" type="radio" name="sorting" value="DESC" style="display: none;"
+                            onchange="searchClick()" />
+                        <label style="height: 15px; width:25px;
+                        position: absolute;
+                         bottom:0px;" for="priceDESC">
+                        </label>
+                        <i id="ariaDESC" class="fa fa-caret-down fa-2x" aria-hidden="true"
+                            style="height: 0px; width:0px;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="book">
+                {{>bookList}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function updateTextInput(name, val) {
+        document.getElementById('yearOfPublishing' + name).value = val;
+    };
+    function searchClick() {
+        let registerForm = document.forms["formi"];
+        let genre = registerForm.elements["genre"].value;
+        let yearOfPublishingFrom = registerForm.elements["yearOfPublishingFrom"].value;
+        let yearOfPublishingBefore = registerForm.elements["yearOfPublishingBefore"].value;
+        let sorting = registerForm.elements["sorting"].value;
+        let search = registerForm.elements["search"].value;
+        let author = registerForm.elements["author"].value;
+        let publisher = registerForm.elements["publisher"].value;
+        var auction;
+        var chboxauction = document.getElementById('auction');
+        if (chboxauction.checked) {
+            auction = true;
+        }
+        else {
+            auction = false;
+        }
+        if (yearOfPublishingFrom > yearOfPublishingBefore) {
+            alert("Неправильная дата издания");
+            return;
+        }
+        let user = JSON.stringify({
+            genre: genre,
+            yearOfPublishingFrom: yearOfPublishingFrom,
+            yearOfPublishingBefore: yearOfPublishingBefore,
+            sorting: sorting,
+            search: search,
+            author: author,
+            publisher: publisher,
+            auction: auction
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("book").innerHTML = request.response;
+        });
+        request.send(user);
+    };
+</script>
+{{>footer}}

@@ -1,0 +1,177 @@
+{{#each Users}}
+<form name="formiModal{{this.idUser}}">
+    <div class="modal fade" id="ModalMessage{{this.idUser}}" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Уведомление</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Сообщение (почему в черный список)</label>
+                    <textarea class="form-control" name="message" rows="3" placeholder="Сообщение"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="blackList({{this.idUser}})">Занести в черный
+                        список</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form name="formiModalFinally{{this.idUser}}">
+    <div class="modal fade" id="ModalMessageFinally{{this.idUser}}" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Уведомление</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Сообщение (почему в черный список)</label>
+                    <textarea class="form-control" name="message" rows="3" placeholder="Сообщение"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        onclick="finallyBlackList({{this.idUser}})">Окончательно в
+                        черный список</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<form name="formiModalWarning{{this.idUser}}">
+    <div class="modal fade" id="ModalMessageWarning{{this.idUser}}" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Предупреждение</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Сообщение</label>
+                    <textarea class="form-control" name="message" rows="3" placeholder="Сообщение"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="warning({{this.idUser}})">Добавить
+                        предупреждение</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{{/each}}
+
+<div class="modal fade" id="ModelWarning" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="warning">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4 py-2" style="border: 2px solid #dee2e6; background-color: #cee4fd;">
+    <div class="col- ml-2 mr-0">
+        Админ
+    </div>
+    <div class="col-1">
+    </div>
+    <div class="col-3 ml-3 mr-0 pr-0 pl-5">
+        Ник, почта
+    </div>
+    <div class="col- mr-2">
+        Продавец
+    </div>
+    <div class="col-">
+        Покупатель
+    </div>
+    <div class="col-2  mx-2 py-0 px-0">
+        Предупреждения
+    </div>
+    <div class="col-2 mr-3">
+    </div>
+</div>
+
+{{#each Users}}
+<div class="row mt-2 py-2" style="border: 2px solid #dee2e6; background-color: #e3effd;">
+    <div class="col">
+        <div class="row align-items-center  my-0 ">
+            <div class="col- mr-3  ml-2">
+                {{#if this.admin}}
+                <i class="fa fa-check-square-o fa-2x text-success" aria-hidden="true"></i>
+                {{else}}
+                <i class="fa fa-square-o fa-2x text-danger" aria-hidden="true"></i>
+                {{/if}}
+            </div>
+            <div class="col-1">
+                <figure class="figureTopAvatar rounded mx-auto d-block">
+                    <img src="../{{this.avatar}}" class="rounded mx-auto d-block" alt="avatar">
+                </figure>
+            </div>
+            <div class="col-3 mx-2  text-center">
+                <div class="row my-0">
+                    <div class="col text-center">
+                        <a href="/seller/{{this.idUser}}">{{this.nickname}}</a>
+                    </div>
+                </div>
+                <div class="row my-0">
+                    <div class="col text-center">
+                        {{this.email}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-1 mx-2 text-center">
+                {{#if this.seller.idSeller}}
+                <i class="fa fa-check-square-o fa-2x text-success" aria-hidden="true"></i>
+                {{else}}
+                <i class="fa fa-square-o fa-2x text-danger" aria-hidden="true"></i>
+                {{/if}}
+            </div>
+            <div class="col-1 mx-2 text-center">
+                {{#if this.buyer.idBuyer}}
+                <i class="fa fa-check-square-o fa-2x text-success" aria-hidden="true"></i>
+                {{else}}
+                <i class="fa fa-square-o fa-2x text-danger" aria-hidden="true"></i>
+                {{/if}}
+            </div>
+            <div class="col-2 ml-2 text-center">
+                {{#if this.numberWarnings}}
+                {{this.numberWarnings}}
+                {{else}}
+                0
+                {{/if}}
+            </div>
+            <div class="col-2 ml-2 mr-0 px-0">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Действия
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <a class="dropdown-item" href="" data-toggle="modal" data-target="#ModelWarning"
+                        onclick="seeWarning({{this.idUser}})">Посмотреть предупреждения</a>
+                    <a class="dropdown-item" href="" data-toggle="modal"
+                        data-target="#ModalMessageWarning{{this.idUser}}">Добавить предупреждение</a>
+                    <a class="dropdown-item" href="" data-toggle="modal"
+                        data-target="#ModalMessage{{this.idUser}}">Занести в черный
+                        список</a>
+                    <a class="dropdown-item" href="" data-toggle="modal"
+                        data-target="#ModalMessageFinally{{this.idUser}}">Окончательно в черный
+                        список</a>
+                    <a class="dropdown-item" onclick="addAdmin({{this.idUser}})">Сделать администратором</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}

@@ -1,0 +1,23 @@
+<div class="row mt-0">
+    <div class="col">
+        <h3>Добавление нового автора</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form method="POST" id="formiCreate" name="formiCreate" enctype="multipart/form-data">
+            <label>Фамилия</label><input name="lastName" class="form-control" value="{{Author.lastName}}" />
+            <label>Имя</label><input name="name" class="form-control" value="{{Author.name}}" />
+            <label>Отчество</label><input name="patronymic" class="form-control" value="{{Author.patronymic}}" />
+            <label>Дата рождения</label><input name="dateOfBirth" class="form-control" value="{{Author.dateOfBirth}}" />
+            <label>Дата смерти (если есть)</label><input name="dateOfDeath" class="form-control"
+                value="{{Author.dateOfDeath}}" />
+            <label>Биография</label>
+            <textarea class="form-control" name="biography" rows="3" value="{{Author.biography}}"></textarea>
+            <label>Фото</label>
+            <input class="form-control-sm form-control-file" type="file" name="filedata" multiple="2"
+                formenctype="multipart/form-data" />
+            <input id="submit" type="button" onclick="createAuthor()" value="Добавить" />
+        </form>
+    </div>
+</div>

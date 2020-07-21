@@ -1,0 +1,175 @@
+{{#each Comments}}
+<div class="modal fade" id="review{{this.idReview}}" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ответ на отзыв</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    <div class="row align-items-center">
+                        <div class="col-2">Ответ:</div>
+                        <div class="col-5">
+                            <textarea class="form-control" id="response{{this.idReview}}"
+                                name="response{{this.idReview}}" rows="3" placeholder="ответ"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer align-items-center">
+                <button class="btn btn-primary" type="button" onclick="review({{this.idReview}})"
+                    data-dismiss="modal" />Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+
+<div class="col-9">
+    <h3>Мои сообщения</h3>
+    <ul class="nav nav-tabs" id="tab-example" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="first-tab" data-toggle="tab" role="tab" href="#UserMessages"
+                aria-selected="true">От системы</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="second-tab" data-toggle="tab" role="tab" href="#Comments">Отзывы пользователей</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="tab-content-example">
+        <div class="tab-pane fade show active" id="UserMessages" role="tabpanel" aria-labelledby="first-tab">
+            <div class="row-">
+                <div class="col-">
+                    <h4>От системы</h4>
+                </div>
+            </div>
+            <div class="row-">
+                <div class="col">
+                    {{#if UserMessages}}
+                    {{#each UserMessages}}
+                    <div class="row align-items-center mt-4 py-2"
+                        style="border: 2px solid #dee2e6; background-color: #e3effd;">
+                        <div class="col-1">
+                            {{#if this.read}}
+                            <i class="fa fa-check-square-o fa-2x text-success" aria-hidden="true"></i>
+                            {{else}}
+                            <i class="fa fa-square-o fa-2x text-danger" aria-hidden="true"></i>
+                            {{/if}}
+                        </div>
+                        <div class="col">
+                            {{this.message}}
+                        </div>
+                        <div class="col-" style="margin-right: 25px;">
+                            <input class="btn btn-primary" type="button" onclick="readUserMessage({{this.idMessage}})"
+                                value="Прочитано">
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <div class="row alert alert-primary">
+                        <div class="col text-center">
+                            У Вас нет сообщений от системы.
+                        </div>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade " id="Comments" role="tabpanel" aria-labelledby="second-tab">
+            <div class="row-">
+                <div class="col-">
+                    <h4>Отзывы пользователей</h4>
+                </div>
+            </div>
+            <div class="row-">
+                <div class="col">
+                    {{#if Comments}}
+                    {{#each Comments}}
+                    <div class="row align-items-center mt-4 py-2"
+                        style="border: 2px solid #dee2e6;background-color: #e3effd;">
+                        <div class="col" style="border: 2px solid #585f66;">
+                            <div class="row align-items-center">
+                                <div class="col- " style="margin: 5px;">
+                                    <figure class="figureTopAvatar rounded mx-auto d-block">
+                                        <img src="../{{this.user.avatar}}" class="rounded mx-auto d-block" alt="avatar"
+                                            width="30px" height="30px">
+                                    </figure>
+                                </div>
+                                <div class="col">
+                                    <div class="row font-weight-light text-info">
+                                        <div class="col-5 text-info" id="date{{this.idReview}}">
+                                            {{this.dateComment}}
+                                        </div>
+                                        <div class="col- font-weight-bold">
+                                            Тип:</div>
+                                        <div class="col">
+                                            {{#if this.typesOfReviews}}
+                                            <i class="fa fa-thumbs-up fa-lg text-success" aria-hidden="true"></i>
+                                            {{else}}
+                                            <i class="fa fa-thumbs-down fa-lg text-danger" aria-hidden="true"></i>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            {{this.comment}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col">
+                                    {{#if this.sellerResponse}}
+                                    <div class="row font-weight-light text-muted">{{this.dateResponse}}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            {{this.sellerResponse}}
+                                        </div>
+                                    </div>
+                                    {{else}}
+                                    <div class="row">
+                                        <button class="btn btn-primary" type="button" data-toggle="modal"
+                                            data-target="#review{{this.idReview}}">Написать ответ</button>
+                                    </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <div class="row alert alert-primary">
+                        <div class="col text-center">
+                            У Вас нет отзывов от других пользователей.
+                        </div>
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function review(idReview) {
+        let response = document.getElementById("response" + idReview).value;
+        let Json = JSON.stringify({
+            response: response
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/ResponseToReview/:" + idReview, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("list").innerHTML = request.response; // смотрим ответ сервера
+        });
+        request.send(Json);
+    }
+</script>

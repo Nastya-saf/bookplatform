@@ -1,0 +1,46 @@
+{
+  "development": {
+    "username": "sa",
+
+    "password": "123",
+
+    "database": "bookPlatform",
+
+    "host": "127.0.0.1",
+
+    "dialect": "mssql",
+    "define": {
+      "timestamps": false
+    }
+  },
+
+  "test": {
+    "username": "",
+
+    "password": null,
+
+    "database": "",
+
+    "host": "",
+
+    "dialect": "mssql",
+    "define": {
+      "timestamps": false
+    }
+  },
+
+  "production": {
+    "username": "",
+
+    "password": null,
+
+    "database": "",
+
+    "host": "127.0.0.1",
+
+    "dialect": "mssql",
+    "define": {
+      "timestamps": false
+    }
+  }
+}

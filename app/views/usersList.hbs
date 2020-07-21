@@ -1,0 +1,54 @@
+<div class="row mt-0">
+    <div class="col">
+        <h3>Список пользователей</h3>
+    </div>
+</div>
+<div class="row  mt-0">
+    <div class="col">
+        <form id="formi" name="formi">
+            <div class="row">
+                <div class="col form-check">
+                    <div class="row mt-0">
+                        <div class="col-1"></div>
+                        <div class="col search">
+                            <input type="text" name="searchUser" placeholder="Никнейм или почта">
+                            <button onclick="submitUserList();return false;"></button>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row mt-0">
+                        Пользователи:
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col mx-3">
+                            <input class="form-check-input" type="checkbox" style="transform: scale(2);" name="user"
+                                value="user" />Обычные пользователи
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col mx-3">
+                            <input class="form-check-input" type="checkbox" style="transform: scale(2);" name="user"
+                                value="sellers" />Продавцы
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col mx-3">
+                            <input class="form-check-input" type="checkbox" style="transform: scale(2);" name="user"
+                                value="buyers" />Покупатели
+                        </div>
+                    </div>
+                    <div class="row  mt-1">
+                        <input class="btn btn-primary" id="submit" onclick="submitUserList()" type="button"
+                            value="отфильтровать" />
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col" id="list">
+        {{>List}}
+    </div>
+</div>

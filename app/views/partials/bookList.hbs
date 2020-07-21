@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="row row-cols-7">
+        {{#each Books}}
+
+        <div class="d-inline-block book parent" style="width: 250px;" onclick="book({{this.idBook}})">
+            <div class="container">
+                <div class="text-center">
+                    <figure class="figureIndex rounded mx-auto d-block">
+                        <img src="{{this.photoBooks.0.URL}}" alt="фото книги ">
+                    </figure>
+                    <font class="font-weight-bold">{{this.title}}</font>
+                </div>
+                <div>
+                    {{#each this.authors}}
+                    {{this.lastName}}
+                    {{/each}}
+
+                </div>
+                <div class="row cild px-0 py-0 mb-1">
+                    {{#if this.lot.idLot}}
+                    <div class="col">
+                        <font style="padding-right:3px;">Цена:</font>
+                        <font>{{this.lot.currentPrice}}</font>
+                    </div>
+                    {{else}}
+                    <div class="col">
+                        <font style="padding-right:3px;">Цена:</font>
+                        <font>{{this.price}}</font>
+                    </div>
+                    {{/if}}
+                    <div class="col-auto">
+                        <a class="btn btn-primary btn-sm" href="/user/basket/{{this.idBook}}" style="width: 100%;">В
+                            корзину</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+<div class="container" id="reqBascet"></div>
+
+<script>
+    function bascet(idbook) {
+        let request = new XMLHttpRequest();
+        request.open("GET", "/user/basket/" + idbook, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            alert("Перейти в корзину");
+        });
+        request.send();
+    }
+    function book(id) {
+        var url = document.location.href + "book/" + id;
+        window.location.replace(url);
+    };
+</script>

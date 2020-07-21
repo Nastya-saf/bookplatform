@@ -1,0 +1,164 @@
+{{>menu}}
+<div class="row" style="margin-top: 75px;">
+    <div class="col-2">
+    </div>
+    <div class="col">
+        <div class="row">
+            <div class="col-3" style="width: 250px;">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width: 250px;">
+                    <ol class="carousel-indicators">
+                        {{#each Books.photoBooks}}
+                        {{#if  @first}}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{@index}}" class="active"></li>
+                        {{else}}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{@index}}"></li>
+                        {{/if}}
+                        {{/each}}
+                    </ol>
+                    <div class="carousel-inner">
+                        {{#each Books.photoBooks}}
+                        {{#if  @first}}
+                        <div class="carousel-item active">
+                            <figure class="figureBook rounded mx-auto d-block">
+                                <img src="../{{this.URL}}" class="w-100" alt="фото книги!">
+                            </figure>
+                        </div>
+                        {{else}}
+                        <div class="carousel-item">
+                            <figure class="figureBook rounded mx-auto d-block">
+                                <img src="../{{this.URL}}" class="w-100" alt="фото книги">
+                            </figure>
+                        </div>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <h3>{{Books.title}}</h3>
+                </div>
+                <div class="row">Автор:{{#each Authors}}
+                    <a href="/author/author/{{this.author.idAuthor}}">{{this.author.lastName}} {{this.author.name}}
+                        {{this.author.patronymic}} </a>
+                    {{/each}}
+                </div>
+                <div class="row">Жанр:
+                    {{#each Genres}}
+                    <a class="text-primary" onclick="subscribe({{this.idGenre}})">{{this.genre.title}} </a>
+                    {{/each}}
+                </div>
+                <div class="row">Издательство: {{Books.publisher.title}}</div>
+                <div class="row">Год издания: {{Books.yearOfPublishing}}</div>
+                <div class="row">Состояние: {{Books.state.title}}</div>
+                <div class="row">Формат: {{Books.format}}</div>
+                <div class="row">Количество страниц: {{Books.numberOfPages}}</div>
+                <div class="row">Продавец: <a href="/seller/{{Books.idUser}}">{{Books.user.nickname}}</a></div>
+                <div class="row">Тип переплета: {{Books.typesOfBinding.title}}</div>
+                <div class="row">Товарная группа: {{Books.productGroup.title}}</div>
+            </div>
+            <div class="col-xs" style="width:50px;">
+            </div>
+            <div class="col-3 price">
+                <div class="row">
+                    <font class="font-weight-bold">Цена: </font> {{Books.price}}
+                </div>
+                <div class="row d-flex justify-content-center" style="margin-top: 15px;">
+                    <button type="button" class="btn btn-primary btn-sm" style="width: 50%;"
+                        onclick="bascet({{Books.idBook}})">В корзину</button>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col">
+                        <div class="row font-weight-bold">Способ оплаты:</div>
+                        <div class="row">
+                            <div class="col-"></div>
+                            <div class="col">
+                                {{#each Books.PaymentMethods}}
+                                {{this.title}}<br>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row font-weight-bold">Способ доставки:</div>
+                        <div class="row">
+                            <div class="col-"></div>
+                            <div class="col">
+                                {{#each Books.DeliveryMethods}}
+                                {{this.title}}<br>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row font-weight-bold">Информация о доставке:</div>
+                        <div class="row">
+                            <div class="col-"></div>
+                            <div class="col">
+                                {{#each Books.InformationDeliveries}}
+                                {{this.title}}<br>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 35px;">
+            <div class="col-8">
+                <div class="row font-weight-bold">
+                    Аннотация:
+                </div>
+                <div class="row">
+                    {{Books.annotation}}
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 35px;">
+            <div class="col-8">
+                <div class="row font-weight-bold">
+                    Описание:
+                </div>
+                <div class="row">
+                    {{Books.description}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function bascet(idbook) {
+        let request = new XMLHttpRequest();
+        request.open("GET", "/user/basket/" + idbook, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            alert("Перейти в корзину");
+        });
+        request.send();
+    }
+    function subscribe(idgenre) {
+        let Json = JSON.stringify({
+            idgenre: idgenre
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/subscribe", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            alert(request.response);
+        });
+        request.send(Json);
+    }
+</script>
+{{>footer}}

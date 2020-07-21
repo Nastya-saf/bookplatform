@@ -1,0 +1,241 @@
+<div class="modal fade" id="Modalcreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body" id="Helpercreate">
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAuction" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Добавить аукцион</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="Helpercreate">
+                <label>дата начала</label><input type="datetime" name="startDate" class="form-control">
+                <label>дата окончания</label><input type="datetime" name="endDate" class="form-control">
+                <label>Минимальный размер ставка</label><input name="minRate" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="clickTrue()">Выставить на аукцион</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row"></div>
+<div class="col-2">
+</div>
+<div class="col">
+    <div class="row">
+        <h1>Добавление книги</h1>
+    </div>
+    <form id="formiCreateBook" name="formiCreateBook" enctype="multipart/form-data">
+        <div class="row align-items-center">
+            <div class="col-2"><label for="title" class="my-1 mr-2">Название:</label></div>
+            <div class="col-5"><input id="title" name="title" required class="form-control" /></div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2"><label class="my-1 mr-2" for="authors">Автор:</label></div>
+            <div class="col-5">
+                <select class="form-control" id="authors" name="authors" multiple>
+                    {{#select Authors}}
+                    {{#each Authors}}
+                    <option value="{{idAuthor}}">{{this.lastName}} {{this.name}} {{this.patronymic}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+            <div class="col">
+                <input class="btn btn-primary" type="button" onclick="getcreateAuthor()" value="Добавить нового автора">
+            </div>
+        </div>
+        <div class="row align-items-center  mt-2">
+            <div class="col-2">Жанр:</div>
+            <div class="col-5">
+                <select name="Genres" class="form-control" multiple>
+                    {{#select Genres}}
+                    {{#each Genres}}
+                    <option value="{{this.idGenre}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+            <div class="col">
+                <input class="btn btn-primary" type="button" onclick="getcreateGenre()" value="Добавить Жанр">
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Издательство:</div>
+            <div class="col-5">
+                <select name="Publishers" class="form-control">
+                    {{#select Publishers}}
+                    {{#each Publishers}}
+                    <option value="{{this.idPublisher}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+            <div class="col">
+                <input class="btn btn-primary" type="button" onclick="getcreatePublisher()"
+                    value="Добавить Издательство">
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Год издания:</div>
+            <div class="col-5">
+                <input name="yearOfPublishing" type="number" required class="form-control" />
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Цена:</div>
+            <div class="col-5">
+                <input name="price" class="form-control" required type="number" />
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Фото:</div>
+            <div class="col-5">
+                <input class="form-control-sm form-control-file" type="button" onclick="getCreatePhotoBook()"
+                    value="Добавить фото" />
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Кол-во страниц:</div>
+            <div class="col-5">
+                <input name="numberOfPages" class="form-control" required type="number" />
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Формат:</div>
+            <div class="col-5">
+                <input name="format" class="form-control" required placeholder="___*___*___" />
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">ББК:</div>
+            <div class="col-5">
+                <input name="BBK" class="form-control" />
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">УДК:</div>
+            <div class="col-5">
+                <input name="UDC" class="form-control" />
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">ISBN:</div>
+            <div class="col-5">
+                <input name="ISBN" class="form-control" />
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Тип переплета:</div>
+            <div class="col-5">
+                <select name="TypesOfBindings" class="form-control">
+                    {{#select TypesOfBindings}}
+                    {{#each TypesOfBindings}}
+                    <option value="{{this.idBinding}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Товарная группа:</div>
+            <div class="col-5">
+                <select name="ProductGroups" class="form-control">
+                    {{#select ProductGroups}}
+                    {{#each ProductGroups}}
+                    <option value="{{this.idGroup}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Способ доставки:</div>
+            <div class="col-5">
+                <select name="DeliveryMethod" class="form-control" multiple>
+                    {{#select DeliveryMethod}}
+                    {{#each DeliveryMethod}}
+                    <option value="{{this.idDelivery}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Способ оплаты:</div>
+            <div class="col-5">
+                <select name="PaymentMethod" class="form-control" multiple>
+                    {{#select PaymentMethod}}
+                    {{#each PaymentMethod}}
+                    <option value="{{this.idPayment}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Информация о доставке:</div>
+            <div class="col-5">
+                <select name="InformationDelivery" class="form-control" multiple>
+                    {{#select InformationDelivery}}
+                    {{#each InformationDelivery}}
+                    <option value="{{this.idInformation}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Состояние:</div>
+            <div class="col-5">
+                <select name="States" class="form-control">
+                    {{#select States}}
+                    {{#each States}}
+                    <option value="{{this.idState}}">{{this.title}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Аннотация:</div>
+            <div class="col-5">
+                <textarea class="form-control" name="annotation" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">Описание:</div>
+            <div class="col-5">
+                <textarea class="form-control" name="description" required rows="3"></textarea>
+            </div>
+        </div>
+        <div class="row align-items-center mt-2">
+            <div class="col-2">
+                <input class="btn btn-primary" type="button" onclick="clickFalse()" value="Добавить книгу" />
+            </div>
+            <div class="col-5">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAuction">
+                    Выставить на аукцион
+                </button>
+            </div>
+        </div>
+    </form>
+    <div id="create"></div>
+</div>
+</div>

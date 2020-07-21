@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-9">
+        <div class="row">
+            <h3>Купленные книги (у меня)</h3>
+        </div>
+        <div class="row alert alert-primary mb-4 mt-2">
+            <div class="col text-center font-weight-bold">
+                Сумма купленных у вас книг составляет {{Sum}}.
+            </div>
+        </div>
+        {{#if Baskets}}
+        {{#each Baskets}}
+        <div class="row align-items-center mt-2 py-2" style="border: 2px solid #dee2e6;background-color: #e3effd;">
+            <div class="col-2">
+                <figure class="figureIndex rounded mx-auto d-block">
+                    <img src="../{{this.book.photoBooks.0.URL}}" class="rounded mx-auto d-block" alt="фото книги ">
+                </figure>
+            </div>
+            <div class="col text-center align-self-center">
+                <div class="row">
+                    <div class="col font-weight-bold">
+                        {{this.book.title}}
+                    </div>
+                </div>
+                {{#each this.book.authors}}
+                <div class="row">
+                    <div class="col">
+                        {{this.lastName}} {{this.name}} {{this.patronymic}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <div class="col-2 text-center align-self-center py-0 px-0" style="margin: 15px;">
+                Цена:
+                {{#if this.lot.currentPrice}}
+                {{this.lot.currentPrice}}
+                {{else}}
+                {{this.book.price}}
+                {{/if}}
+            </div>
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="row alert alert-primary">
+            <div class="col text-center">
+                У Вас пока не купили ни одной книги :-(
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</div>

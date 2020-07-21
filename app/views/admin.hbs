@@ -1,0 +1,363 @@
+{{>menu}}
+<div class="row" style="margin-top: 75px; margin-left: 10px;">
+    <div class="col-2" style="border: 2px solid #415161;">
+        <div class="text-primary underline" onclick="get('/admin/createGenre')">Добавить Жанр</div>
+        <div class="text-primary underline" onclick="get('/admin/createState')">Добавить Состояние</div>
+        <div class="text-primary underline" onclick="get('/admin/createGlossary')">Добавить термин</div>
+        <div class="text-primary underline" onclick="get('/admin/createRegulations')">Добавить Правило</div>
+        <div class="text-primary underline" onclick="get('/admin/createDeliveryMethod')">Добавить способ доставки</div>
+        <div class="text-primary underline" onclick="get('/admin/createPublisher')">Добавить Издательство</div>
+        <div class="text-primary underline" onclick="get('/admin/createTypesOfBinding')">Добавить типа переплета</div>
+        <div class="text-primary underline" onclick="get('/admin/createProductGroup')">Добавить товарную группу</div>
+        <div class="text-primary underline" onclick="get('/admin/createPaymentMethod')">Добавить способ оплаты</div>
+        <div class="text-primary underline" onclick="get('/author/createAuthorAdmin')">Добавить Автора</div>
+        <div class="text-primary underline" onclick="get('/admin/usersList')">Пользователи</div>
+        <div class="text-primary underline" onclick="get('/admin/blackList')">Черный список</div>
+        <div class="text-primary underline" onclick="get('/admin/discountSystem')">Установить размер скидки</div>
+        <div class="text-primary underline" onclick="get('/admin/submissionApplications')">Заявки на выставление
+            (книги/авторы/жанры)</div>
+        <div class="text-primary underline" onclick="get('/admin/sales')">Продажи(книги и лоты для удаления)</div>
+        <div class="text-primary underline" onclick="get('/admin/adminMessages')">Сообщения (от пользователей)</div>
+        <div class="text-primary underline" onclick="get('/admin/transactions')">Транзакции</div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col">
+        <div class="row">
+            <div class="col-9" id="admin">
+            </div>
+            <div class="col px-0">
+                <input class="btn btn-primary" type="button" onclick="updateTop()" value="Обновить топ">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function createAuthor() {
+        let formElement = document.forms["formi"];
+        var formData = new FormData(formElement);
+        var request = new XMLHttpRequest();
+        request.open("POST", "/author/createAuthorAdmin");
+        request.addEventListener("load", function () {
+        });
+        request.send(formData);
+    }
+</script>
+<script>
+    function add(id = 0) {
+        let registerForm = document.forms["formi"];
+        let textOne = registerForm.elements["textOne"].value;
+        let textTwo;
+        if (registerForm.elements["textTwo"]) {
+            textTwo = registerForm.elements["textTwo"].value;
+        }
+        var url = document.getElementById("url").textContent;
+        let json = JSON.stringify({
+            textOne: textOne,
+            textTwo: textTwo,
+            id: id
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/admin/create" + url, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            alert(request.response)
+        });
+        request.send(json);
+    };
+</script>
+<script>
+    function reqPost(json, id = 0) {
+        let request = new XMLHttpRequest();
+        request.open("POST", "/admin/usersList", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            if (id) {
+                $('#ModalMessage' + id).modal('hide');
+                $('#ModalMessageFinally' + id).modal('hide');
+                $('#ModalMessageWarning' + id).modal('hide');
+            }
+            document.getElementById("list").innerHTML = request.response;
+        });
+        request.send(json);
+    };
+    function seeWarning(iduser) {
+        let json = JSON.stringify({
+            iduser: iduser
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/user/userWarnings", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("warning").innerHTML = request.response;
+        });
+        request.send(json);
+    };
+    function blackList(iduser) {
+        let registerForm = document.forms["formiModal" + iduser];
+        let message = registerForm.elements["message"].value;
+        let registerForm2 = document.forms["formi"];
+        let search = registerForm2.elements["search"].value;
+        var checkboxes = document.getElementsByName('user');
+        var checkboxesChecked = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkboxesChecked.push(checkboxes[i].value);
+            }
+        };
+        let json = JSON.stringify({
+            warning: false,
+            finally: false,
+            delete: true,
+            addAdmin: false,
+            message: message,
+            iduser: iduser,
+            user: checkboxesChecked,
+            search: search
+        });
+        reqPost(json, iduser);
+    };
+    function finallyBlackList(iduser) {
+        let registerForm = document.forms["formiModalFinally" + iduser];
+        let message = registerForm.elements["message"].value;
+        let registerForm2 = document.forms["formi"];
+        let search = registerForm2.elements["search"].value;
+        var checkboxes = document.getElementsByName('user');
+        var checkboxesChecked = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkboxesChecked.push(checkboxes[i].value);
+            }
+        };
+        let json = JSON.stringify({
+            warning: false,
+            finally: true,
+            delete: false,
+            addAdmin: false,
+            message: message,
+            iduser: iduser,
+            user: checkboxesChecked,
+            search: search
+        });
+        reqPost(json, iduser);
+    };
+    function warning(iduser) {
+        let registerForm = document.forms["formiModalWarning" + iduser];
+        let message = registerForm.elements["message"].value;
+        let registerForm2 = document.forms["formi"];
+        let search = registerForm2.elements["search"].value;
+        var checkboxes = document.getElementsByName('user');
+        var checkboxesChecked = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkboxesChecked.push(checkboxes[i].value);
+            }
+        };
+        let json = JSON.stringify({
+            warning: true,
+            finally: false,
+            delete: false,
+            addAdmin: false,
+            message: message,
+            iduser: iduser,
+            user: checkboxesChecked,
+            search: search
+        });
+        reqPost(json, iduser);
+    };
+    function addAdmin(iduser) {
+        let registerForm2 = document.forms["formi"];
+        let search = registerForm2.elements["search"].value;
+        var checkboxes = document.getElementsByName('user');
+        var checkboxesChecked = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkboxesChecked.push(checkboxes[i].value);
+            }
+        };
+        let json = JSON.stringify({
+            addAdmin: true,
+            message: null,
+            iduser: iduser,
+            user: checkboxesChecked,
+            search: search
+        });
+        reqPost(json);
+    }
+    function submitUserList() {
+        let registerForm = document.forms["formi"];
+        let search = registerForm.elements["searchUser"].value;
+        var checkboxes = document.getElementsByName('user');
+        var checkboxesChecked = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkboxesChecked.push(checkboxes[i].value);
+            }
+        };
+        let json = JSON.stringify({
+            message: null,
+            iduser: null,
+            user: checkboxesChecked,
+            search: search
+        });
+        reqPost(json);
+    }
+</script>
+<script>
+    function get(url) {
+        let request = new XMLHttpRequest();
+        request.open("GET", url, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.getElementById("admin").innerHTML = request.response;
+        });
+        request.send();
+    };
+    function post(json, url, id = 0) {
+        let request = new XMLHttpRequest();
+        request.open("POST", url, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            if (id) {
+                $('#ModalMessageBook' + id).modal('hide');
+                $('#ModalMessageGenre' + id).modal('hide');
+                $('#ModalMessageAuthor' + id).modal('hide');
+                $('#formiModalPublisher' + id).modal('hide');
+                $('#ModalMessageComment' + id).modal('hide');
+            }
+            document.getElementById("admin").innerHTML = request.response;
+        });
+        request.send(json);
+    };
+    function updateTop() {
+        let json = JSON.stringify({
+            updateTop: true
+        });
+        post(json, "/admin");
+    };
+    function replyMessage(iduser, idcomment) {
+        let registerForm = document.forms["formi"];
+        let message = registerForm.elements["message" + idcomment].value;
+        let json = JSON.stringify({
+            read: false,
+            iduser: iduser,
+            message: message,
+            idcomment: idcomment
+        });
+        post(json, "/admin/adminMessages", idcomment);
+        $('#ModalMessageComment' + idcomment).modal('hide');
+        get("/admin/adminMessages");
+    };
+    function readTrue(iduser, idcomment) {
+        let json = JSON.stringify({
+            read: true,
+            iduser: iduser,
+            idcomment: idcomment
+        });
+        post(json, "/admin/adminMessages", idcomment);
+        get("/admin/adminMessages");
+    };
+    function deleteSalesBook(id) {
+        let registerForm = document.forms["formi"];
+        let search = registerForm.elements["searchUser"].value;
+        let message = "";
+        if (id) {
+            message = registerForm.elements["message"].value;
+        }
+        let json = JSON.stringify({
+            search: search,
+            id: id,
+            message: message
+        });
+        post(json, "/admin/sales", id);
+    };
+    function application(selection, id = 0, renouncement = false) {
+        let message = "";
+        if (renouncement == false) {
+            let registerForm = document.forms["formi"];
+            if (selection == "books") {
+                registerForm = document.forms["formiModalBook" + id];
+            }
+            if (selection == "genres") {
+                registerForm = document.forms["formiModalGenre" + id];
+            }
+            if (selection == "authors") {
+                registerForm = document.forms["formiModalAuthor" + id];
+            }
+            if (selection == "publishers") {
+                registerForm = document.forms["formiModalPublisher" + id];
+            }
+            message = registerForm.elements["message"].value;
+        }
+        let json = JSON.stringify({
+            selection: selection,
+            id: id,
+            renouncement: renouncement,
+            message: message
+        });
+        post(json, "/admin/submissionApplications", id);
+    };
+    function deleteBlackList(iduser) {
+        let registerForm = document.forms["formi"];
+        let search = registerForm.elements["searchUser"].value;
+        var checkboxes = document.getElementsByName('user');
+        var checkboxesChecked = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkboxesChecked.push(checkboxes[i].value);
+            }
+        };
+        let json = JSON.stringify({
+            iduser: iduser,
+            search: search
+        });
+        post(json, "/admin/blackList");
+    };
+    function editDiscountSystem(iddiscount) {
+        let registerForm = document.forms["formi"];
+        let discountPercentage = registerForm.elements["discountPercentage"].value;
+        let placeTheTop = registerForm.elements["placeTheTop"].value;
+        let json = JSON.stringify({
+            method: "edit",
+            iddiscount: iddiscount,
+            discountPercentage: discountPercentage,
+            placeTheTop: placeTheTop
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/admin/discountSystem", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            if (request.response == "true") {
+                get("/admin/discountSystem");
+            }
+            else {
+                alert(request.response);
+            }
+        });
+        request.send(json);
+    };
+    function addDiscountSystem() {
+        let registerForm = document.forms["formi"];
+        let discountPercentage = registerForm.elements["discountPercentage"].value;
+        let placeTheTop = registerForm.elements["placeTheTop"].value;
+        let json = JSON.stringify({
+            method: "add",
+            discountPercentage: discountPercentage,
+            placeTheTop: placeTheTop
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/admin/discountSystem", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            if (request.response == "true") {
+                get("/admin/discountSystem");
+            }
+            else {
+                alert(request.response);
+            }
+        });
+        request.send(json);
+    };
+</script>
+{{>footer}}

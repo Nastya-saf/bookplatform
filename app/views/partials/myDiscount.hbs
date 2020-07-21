@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-9">
+        <div class="row">
+            <div class="col">
+                <h3>Моя скидка</h3>
+            </div>
+        </div>
+        <div class="row alert alert-primary">
+            <div class="col text-center">
+                {{#if Discount}}
+                <div class="row">
+                    <div class="col font-weight-bold">
+                        Ваша скидка: {{Discount.discountPercentage}}%
+                    </div>
+                </div>
+                Ваше место: {{Top.place}}
+                {{else}}
+                Жаль, но у Вас нет скидки :-(
+                {{/if}}
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col text-center">
+                <h5>Система скидок</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{#each DiscountSystem}}
+                <div class="row mt-2" style=" border-radius: 15px;background-color: #e3effd;">
+                    <div class="col-2 text-center align-self-center py-3"
+                        style=" border-top-left-radius: 15px; border-bottom-left-radius:15px;background-color: #abe6f8;">
+                        {{this.discountPercentage}}%
+                    </div>
+                    <div class="col align-self-center">
+                        Топ {{this.maxPlace}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

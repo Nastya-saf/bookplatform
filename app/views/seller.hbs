@@ -1,0 +1,172 @@
+{{>menu}}
+<div class="modal fade" id="ModalcommentsSeller" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Добавление комментария</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Тип отзыва:</label>
+                <lable>
+                    <input type="radio" name="TypesOfReviews" value="true">
+                    <i class="fa fa-thumbs-up fa-lg text-success" aria-hidden="true"></i>
+                </lable>
+                <lable>
+                    <input type="radio" name="TypesOfReviews" value="false">
+                    <i class="fa fa-thumbs-down fa-lg text-danger" aria-hidden="true"></i>
+                </lable>
+                <label>Комментарий:</label>
+                <textarea class="form-control" name="comment" rows="3" placeholder="комментарий"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"
+                    onclick="CommentsSeller({{Users.idUser}})">Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 75px; margin-left: 10px;">
+    <div class="col-2"></div>
+    <div class="col-7">
+        <div class="row">
+            <div class="col">
+                <h3>Продавец</h3>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="row mt-3 py-1" style=" border-radius: 15px; background-color: #e3effd;">
+                    <div class="col- align-self-center ml-4">
+                        <figure class="figureTopAvatar rounded mx-auto d-block">
+                            <img src="../{{Users.avatar}}" class="rounded mx-auto d-block" alt="avatar">
+                        </figure>
+                    </div>
+                    <div class="col align-self-center pl-3">
+                        <a href="/seller/{{Users.idUser}}">{{Users.nickname}}</a>
+                    </div>
+                    <div class="col-4 align-self-center  text-center">
+                        Проданных книг: {{Users.seller.numberOfSales}}
+                    </div>
+                </div>
+                <div class="row pl-5 mt-4">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col- font-weight-bold">Страна:</div>
+                            <div class="col">{{Users.seller.country}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col- font-weight-bold">Регион:</div>
+                            <div class="col">{{Users.seller.region}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col- font-weight-bold">Город:</div>
+                            <div class="col">{{Users.seller.city}}</div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-bold">
+                            Дополнительная информация:
+                        </div>
+                        {{#if Users.seller.InformationAdditional}}
+                        {{Users.seller.InformationAdditional}}
+                        {{else}}
+                        &#8212;
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="row mt-5 mb-3 justify-content-between">
+                    <div class="col-2">
+                        <h5>Отзывы</h5>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#ModalcommentsSeller">
+                            Оставить отзыв
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{#each Comments}}
+                        <div class="row align-items-center py-2 mt-4"
+                            style="border: 2px solid #dee2e6;background-color: #e3effd;">
+                            <div class="col">
+                                <div class="row align-items-center">
+
+                                    <div class="col- " style="margin: 5px;">
+                                        <figure class="figureTopAvatar rounded mx-auto d-block">
+                                            <img src="../{{this.user.avatar}}" class="rounded mx-auto d-block"
+                                                alt="avatar">
+                                        </figure>
+                                    </div>
+                                    <div class="col">
+                                        <div class="row font-weight-light ">
+                                            <div class="col-5 text-info">
+                                                {{this.dateComment}}
+                                            </div>
+                                            <div class="col- font-weight-bold">
+                                                Тип:</div>
+                                            <div class="col">
+                                                {{#if this.typesOfReviews}}
+                                                <i class="fa fa-thumbs-up fa-lg text-success" aria-hidden="true"></i>
+                                                {{else}}
+                                                <i class="fa fa-thumbs-down fa-lg text-danger" aria-hidden="true"></i>
+                                                {{/if}}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                {{this.comment}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{#if this.sellerResponse}}
+                                <div class="row">
+                                    <div class="col-2"></div>
+                                    <div class="col">
+                                        <div class="row font-weight-light text-muted">
+                                            {{this.dateResponse}}
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                {{this.sellerResponse}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function CommentsSeller(iduser) {
+        let registerForm = document.forms["formi"];
+        let comment = registerForm.elements["comment"].value;
+        let TypesOfReviews = registerForm.elements["TypesOfReviews"].value;
+
+        let Json = JSON.stringify({
+            comment: comment,
+            TypesOfReviews: TypesOfReviews
+        });
+        let request = new XMLHttpRequest();
+        request.open("POST", "/commetsSeller/" + iduser, true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            document.location.href = request.response;
+        });
+        request.send(Json);
+    }
+</script>
+{{>footer}}

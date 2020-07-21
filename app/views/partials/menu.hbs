@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style type="text/css">
+        .underline:hover {
+            text-decoration: underline;
+        }
+
+        .figureIndex {
+            width: 100px;
+            height: 110px;
+            margin: 0;
+        }
+
+        figure img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .figureBook {
+            width: 250px;
+            height: 350px;
+            margin: 0;
+        }
+
+        .figureTopAvatar {
+            width: 50px;
+            height: 50px;
+            margin: 0;
+        }
+
+        .figureBookAdmin {
+            width: 60px;
+            height: 80px;
+            margin: 0;
+        }
+
+        .figureProfile {
+            width: 190px;
+            height: 250px;
+            margin: 0;
+            border: 2px solid #dee2e6;
+            padding: 5px;
+        }
+
+        .figureAuthor {
+            width: 200px;
+            height: 250px;
+            margin: 0;
+        }
+
+        .book {
+            border-radius: 5%;
+            border: 2px solid #dee2e6;
+            background-color: #e3effd;
+            padding: 10px;
+            margin: 7px;
+            height: 250px;
+        }
+
+        .price {
+            border-radius: 5%;
+            border: 2px solid #415161;
+            background-color: #e3effd;
+            padding: 25px;
+            margin-right: 0;
+        }
+
+        .bookCrete .row {
+            margin-top: 25px;
+        }
+
+
+        .search {
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .search>input {
+            width: 100%;
+            height: 30px;
+            padding-left: 10px;
+            border: 2px solid #42a1f0;
+            border-radius: 5px;
+            outline: none;
+            background: #ffffff;
+            color: #9e9c9c;
+        }
+
+        .search>button {
+            position: absolute;
+            top: 0;
+            right: 0px;
+            width: 42px;
+            height: 30px;
+            border: none;
+            background: #42a1f0;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search>button:before {
+            content: "\f002";
+            font-family: FontAwesome;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .parent {
+            position: relative;
+        }
+
+        .cild {
+            position: absolute;
+            bottom: 0;
+        }
+
+        .slider {
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 21px;
+            width: 21px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            -webkit-transition: 0.4s;
+            transition: 0.4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196f3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196f3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        .slider.round {
+            border-radius: 17px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        #priceDESC:checked~#ariaDESC {
+            color: rgb(76, 170, 247) !important;
+        }
+
+        #priceDESC:checked~#ariaASC {
+            color: rgb(7, 7, 7) !important;
+        }
+
+        #priceASC:checked~#ariaDESC {
+            color: rgb(7, 7, 7) !important;
+        }
+
+        #priceASC:checked~#ariaASC {
+            color: rgb(76, 170, 247) !important;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/d0f7633882.js" crossorigin="anonymous"></script>
+    <title>Букинистика{{title}}</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <form id="formi" name="formi" method="POST" enctype="multipart/form-data">
+            <div class="container-fluid">
+                <div class="row" style="padding: 10px; border-bottom:2px solid #8ec6f3;">
+                    <div class="col-2"></div>
+                    <div class="col">
+                        <a href="/" style="margin-right: 40px;">Главная</a>
+                        <a href=" /glossary" style="margin-right: 40px;">Глоссарий</a>
+                        <a href="/regulations" style="margin-right: 40px;">Правила сайта</a>
+                        <a href="/topSellers" style="margin-right: 50px;">Топ продавцов</a>
+                        <a href="/sellersList" style="margin-right: 45px;">Продавцы</a>
+                    </div>
+                    <div class="col-3" style="text-align:right;padding-right:50px;">
+                        {{#if User.idUser}}
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                            aria-haspopup="true" aria-expanded="false">{{User.nickname}}</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/user">Профиль</a>
+                            {{#if User.admin}}
+                            <a class="dropdown-item" href="/admin">Страница администратора</a>
+                            {{/if}}
+                            <a class="dropdown-item" href="/user/cart">Корзина</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/logout">Выход</a>
+                        </div>
+                        {{else}}
+                        <a href="/signup" style="margin-right: 40px;">Регистрация</a>
+                        <a href="/signin">Вход</a>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="row" style=" padding: 10px; border-bottom:2px solid #8ec6f3;">
+                    <div class="col-4"></div>
+                    <div class="col">
+                        <div class="search">
+                            {{#if homeSearch}}
+                            <input type="text" name="search" placeholder="Поиск" value="{{homeSearch}}">
+                            {{else}}
+                            <input type="text" name="search" placeholder="Поиск">
+                            {{/if}}
+                            <button onclick="searchButton();return false;"></button>
+                        </div>
+
+                    </div>
+                    <div class="col-4" style="text-align:right;padding-right:50px;">
+                        <a href="/user/cart" class="cart"><i class="fa fa-shopping-basket fa-2x"
+                                aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>

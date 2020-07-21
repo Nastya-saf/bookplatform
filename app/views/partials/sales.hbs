@@ -1,0 +1,83 @@
+<form name="formiModalBook{{this.idBook}}">
+    {{#each Books}}
+    <div class="modal fade" id="ModalMessageBook{{this.idBook}}" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Уведомление</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Сообщение (почему книга удалена)</label>
+                    <textarea class="form-control" name="message" rows="3" placeholder="Сообщение"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"
+                        onclick="deleteSalesBook({{this.idBook}})">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</form>
+
+<div class="row mt-0">
+    <div class="col">
+        <h3>Продаваемые книги</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col"></div>
+    <div class="col-7">
+        <div class="search">
+            <input type="text" name="searchUser" placeholder="Название или описание">
+            <button type="button" onclick="deleteSalesBook(0)"></button>
+        </div>
+    </div>
+    <div class="col"></div>
+</div>
+{{#if Books}}
+<div class="row  mt-0">
+    <div class="col">
+        {{#each Books}}
+        <div class="row align-items-center mt-2 py-2" style="border: 2px solid #dee2e6;background-color: #e3effd;">
+            <div class="col- ml-2">
+                <figure class="figureBookAdmin rounded mx-auto d-block">
+                    <img src="../{{this.photoBooks.0.URL}}" class="rounded mx-auto d-block" alt="фото книги ">
+                </figure>
+            </div>
+            <div class="col text-center">
+                {{this.title}}
+            </div>
+            <div class="col-3">
+                {{#each this.authors}}
+                <div class="row">
+                    <div class="col text-center">
+                        {{this.lastName}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <div class="col-3 text-center">
+                {{#if this.lot.idLot}}
+                <input class="btn btn-primary" type="button" data-toggle="modal"
+                    data-target="#ModalMessageBook{{this.idBook}}" value="Удалить лот">
+                {{else}}
+                <input class="btn btn-primary" type="button" data-toggle="modal"
+                    data-target="#ModalMessageBook{{this.idBook}}" value="Удалить книгу">
+                {{/if}}
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{else}}
+<div class="row alert alert-primary">
+    <div class="col text-center">
+        На платформе пока не выставленно ни одной книги :-(
+    </div>
+</div>
+{{/if}}

@@ -1,0 +1,27 @@
+{{>menu}}
+<div class="row" style="margin-top: 75px; margin-left: 10px;">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <h3>Продавцы</h3>
+        <div class="row">
+            <div class="col">
+                {{#each Sellers}}
+                <div class="row mt-3 py-1" style=" border-radius: 15px; background-color: #e3effd;">
+                    <div class="col- align-self-center ml-4">
+                        <figure class="figureTopAvatar rounded mx-auto d-block">
+                            <img src="../{{this.user.avatar}}" class="rounded mx-auto d-block" alt="avatar">
+                        </figure>
+                    </div>
+                    <div class="col align-self-center pl-3">
+                        <a href="/seller/{{this.user.idUser}}">{{this.user.nickname}}</a>
+                    </div>
+                    <div class="col-4 align-self-center  text-center">
+                        Проданных книг: {{this.numberOfSales}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+{{>footer}}

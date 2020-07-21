@@ -1,0 +1,68 @@
+{{#each CommentSites}}
+<div class="modal fade" id="ModalMessageComment{{this.idComment}}" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ответ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Сообщение</label>
+                <textarea class="form-control" name="message{{this.idComment}}" rows="3"
+                    placeholder="Сообщение"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"
+                    onclick="replyMessage({{this.idUser}},{{this.idComment}})">Ответить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}
+
+
+<div class="row mt-0">
+    <div class="col">
+        <h3>Сообщения от пользователей</h3>
+    </div>
+</div>
+{{#if CommentSites}}
+<div class="row-">
+    <div class="col">
+        {{#each CommentSites}}
+        <div class="row align-items-center mt-2 py-2" style="border: 2px solid #dee2e6; background-color: #e3effd;">
+            <div class="col-1">
+                {{#if this.read}}
+                <i class="fa fa-check-square-o fa-2x text-success" aria-hidden="true"></i>
+                {{else}}
+                <i class="fa fa-square-o fa-2x text-danger" aria-hidden="true"></i>
+                {{/if}}
+            </div>
+            <div class="col">
+                {{this.message}}
+            </div>
+            <div class="col- mx-2">
+                <a href="/seller/{{this.idUser}}">Пользователь</a>
+            </div>
+            <div class="col-">
+                <input class="btn btn-primary" type="button" data-toggle="modal"
+                    data-target="#ModalMessageComment{{this.idComment}}" value="Ответить">
+            </div>
+            <div class="col- mx-2" style="margin-right: 25px;">
+                <input class="btn btn-primary" onclick="readTrue({{this.idUser}},{{this.idComment}})" type="button"
+                    value="Прочитано">
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{else}}
+<div class="row mt-3 alert alert-primary text-center">
+    <div class="col text-center">
+        Нет сообщений от пользователей.
+    </div>
+</div>
+{{/if}}
